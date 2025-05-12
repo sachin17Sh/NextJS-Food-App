@@ -4,6 +4,17 @@ import { notFound } from 'next/navigation'
 import classes from './page.module.css'
 import { getMeal } from '@/lib/meals'
 
+export async function generateMetadata({ params }) {
+  const meal = getMeal(params.mealSlug)
+  if (!meal) {
+    return notFound()
+  }
+  return {
+    title: meal.title,
+    description: meal.summary
+  }
+
+}
 
 export default function MealDetails({ params }) {
   const meal = getMeal(params.mealSlug)
@@ -16,7 +27,7 @@ export default function MealDetails({ params }) {
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={meal.image} alt={meal.title} fill/>
+          <Image src={meal.image} alt={meal.title} fill />
         </div>
         <div className={classes.headerText}>
           <h1>{meal.title}</h1>
@@ -25,7 +36,7 @@ export default function MealDetails({ params }) {
         </div>
       </header>
       <main>
-      <p className={classes.instructions} dangerouslySetInnerHTML={{__html: meal.instructions}}></p>
+        <p className={classes.instructions} dangerouslySetInnerHTML={{ __html: meal.instructions }}></p>
       </main>
     </>
 
